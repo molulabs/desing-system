@@ -1,27 +1,17 @@
 import React from 'react';
+import { multiChoiceState } from './multiChoice.js';
 
 export function MultiChoice({ value = [], onChange, options = [], name, min = 180, disabled, invalid, max, variant = 'tiles', style }) {
-  const opts = options.map(o => (typeof o === 'object' ? o : { value: o, label: o }));
-  const sel = Array.isArray(value) ? value : [];
-  const full = max != null && sel.length >= max;
+  const state = multiChoiceState({ value, options, max, disabled });
+  const { opts, sel, main, ex } = state;
   const toggle = o => {
-    if (disabled) return;
-    const on = sel.includes(o.value);
-    let next;
-    if (on) next = sel.filter(v => v !== o.value);
-    else if (o.exclusive) next = [o.value];
-    else {
-      if (full) return;
-      const excl = opts.filter(x => x.exclusive).map(x => x.value);
-      next = [...sel.filter(v => !excl.includes(v)), o.value];
-    }
-    onChange && onChange(next);
+    const next = state.toggle(o);
+    if (next && onChange) onChange(next);
   };
   if (variant === 'list') {
-    const main = opts.filter(o => !o.exclusive), ex = opts.filter(o => o.exclusive);
     const row = (o, i, first) => {
-      const on = sel.includes(o.value);
-      const off = disabled || (!on && full && !o.exclusive);
+      const on = state.isOn(o);
+      const off = state.isOff(o);
       return (
         <label key={String(o.value)} style={{
           position: 'relative', display: 'flex', gap: '11px', alignItems: 'center',
@@ -54,16 +44,15 @@ export function MultiChoice({ value = [], onChange, options = [], name, min = 18
           {ex.length ? <div style={{ borderTop: '1px solid var(--line)', background: 'var(--page)' }}>{ex.map((o, i) => row(o, i, i === 0))}</div> : null}
         </div>
         <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--ink-3)', padding: '5px 2px 0' }}>
-          {sel.length ? (ex.some(o => sel.includes(o.value)) ? ex.find(o => sel.includes(o.value)).label : sel.length + ' de ' + main.length + ' seleccionadas') : 'Ninguna seleccionada'}{max != null ? ' · máx. ' + max : ''}
+          {state.summary}
         </div>
       </div>
     );
   }
   if (variant === 'buttons') {
-    const main = opts.filter(o => !o.exclusive), ex = opts.filter(o => o.exclusive);
     const btn = (o, i) => {
-      const on = sel.includes(o.value);
-      const off = disabled || (!on && full && !o.exclusive);
+      const on = state.isOn(o);
+      const off = state.isOff(o);
       return (
         <label key={String(o.value)} title={typeof o.hint === 'string' ? o.hint : undefined} style={{
           position: 'relative', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: '6px',
@@ -93,8 +82,8 @@ export function MultiChoice({ value = [], onChange, options = [], name, min = 18
   if (variant === 'chips') return (
     <div role="group" style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', opacity: disabled ? 0.45 : 1, ...style }}>
       {opts.map(o => {
-        const on = sel.includes(o.value);
-        const off = disabled || (!on && full && !o.exclusive);
+        const on = state.isOn(o);
+        const off = state.isOff(o);
         return (
           <label key={String(o.value)} title={typeof o.hint === 'string' ? o.hint : undefined} style={{
             position: 'relative', display: 'inline-flex', alignItems: 'center', gap: '6px',
@@ -121,8 +110,8 @@ export function MultiChoice({ value = [], onChange, options = [], name, min = 18
       gap: '8px', opacity: disabled ? 0.45 : 1, ...style
     }}>
       {opts.map(o => {
-        const on = sel.includes(o.value);
-        const off = disabled || (!on && full && !o.exclusive);
+        const on = state.isOn(o);
+        const off = state.isOff(o);
         return (
           <label key={String(o.value)} style={{
             position: 'relative', display: 'flex', gap: '9px', alignItems: 'flex-start',

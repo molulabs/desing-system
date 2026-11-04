@@ -1,6 +1,7 @@
 import React from 'react';
 import * as ReactDOM from 'react-dom';
 import { controlStyle } from './Field.jsx';
+import { acNorm, acResults, defaultCreateLabel, defaultExact } from './acResults.js';
 
 // With a bundler ReactDOM is the imported module. Claude Design strips imports and loads ReactDOM
 // as a global, so the name may be undeclared there: check it with typeof, then try window.ReactDOM.
@@ -8,9 +9,7 @@ const portal = (node, target) => {
   const RD = typeof ReactDOM !== 'undefined' && ReactDOM.createPortal ? ReactDOM : typeof window !== 'undefined' && window.ReactDOM;
   return RD && RD.createPortal && target ? RD.createPortal(node, target) : node;
 };
-export const acNorm = s => String(s == null ? '' : s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
-const defaultExact = (it, t) => acNorm(typeof it.label === 'string' ? it.label : it.value) === acNorm(t);
-const defaultCreateLabel = t => 'Crear «' + t + '»';
+export { acNorm };
 
 /** Shared engine for Autocomplete and AutocompleteMulti: filtering, keyboard, floating menu, create row. */
 export function useAcMenu({ items, query, emptyLabel = 'Sin resultados', onPick, onCreate, createLabel = defaultCreateLabel, matchExact = defaultExact, exclude = [], closeOnPick = true, disabled }) {
@@ -35,10 +34,7 @@ export function useAcMenu({ items, query, emptyLabel = 'Sin resultados', onPick,
     if (ro) ro.observe(anchor.current);
     return () => { window.removeEventListener('scroll', place, true); window.removeEventListener('resize', place); if (ro) ro.disconnect(); };
   }, [open, place]);
-  const text = (query || '').trim();
-  const q = acNorm(text);
-  const list = q ? items.filter(it => acNorm((typeof it.label === 'string' ? it.label : '') + ' ' + (it.meta || '')).includes(q)) : items;
-  const canCreate = !!onCreate && !!text && ![...items, ...exclude].some(it => matchExact(it, text));
+  const { text, list, canCreate } = acResults({ items, query, onCreate, matchExact, exclude });
   const count = list.length + (canCreate ? 1 : 0);
   React.useEffect(() => { setActive(-1); }, [query]);
   const pick = it => { onPick(it); setActive(-1); if (closeOnPick) setOpen(false); };

@@ -1,6 +1,5 @@
 import React from 'react';
-
-const statusOf = (s, i, current) => s.status || (i < current ? 'done' : i === current ? 'current' : 'todo');
+import { statusOf } from './stepStatus.js';
 
 export function Stepper({ steps = [], current = 0, onStep, compact, style }) {
   if (compact) {

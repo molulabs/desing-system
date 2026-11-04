@@ -15,9 +15,11 @@ const flat = (style) => Object.assign({}, ...[style].flat(Infinity).filter(Boole
 
 test('the package resolves the native renderers', () => {
     expect(Object.keys(ds).sort()).toEqual([
-        'AlertBanner', 'AppBar', 'AppBarAction', 'Button', 'Card', 'EmptyState', 'Field', 'IconButton', 'ListGroup',
-        'ListRow', 'TOAST_TONES', 'TabBar', 'Tag', 'TextInput', 'Toast', 'ToastProvider', 'ToastStack', 'controlStyle',
-        'useToasts',
+        'AlertBanner', 'AppBar', 'AppBarAction', 'Autocomplete', 'AutocompleteMulti', 'Button', 'Card', 'Checkbox', 'Choice',
+        'DateInput', 'DateRange', 'Dialog', 'EmptyState', 'Field', 'FormActions', 'FormRow', 'IconButton', 'KeyValueList',
+        'ListGroup', 'ListRow', 'MultiChoice', 'NumberInput', 'RadioGroup', 'SectionHeader', 'SegmentedControl', 'Select',
+        'Sheet', 'SheetAction', 'Stepper', 'Switch', 'TOAST_TONES', 'TabBar', 'Tag', 'TextInput', 'Textarea', 'Toast',
+        'ToastProvider', 'ToastStack', 'Wizard', 'controlStyle', 'useToasts',
     ]);
 });
 
