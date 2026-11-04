@@ -11,7 +11,15 @@
       "types": "./src/index.d.ts",
       "default": "./src/index.js"
     },
-    "./styles.css": "./styles.css"
+    "./styles.css": "./styles.css",
+    "./tokens/native": {
+      "types": "./tokens/native.d.ts",
+      "default": "./tokens/native.js"
+    }
+  },
+  "scripts": {
+    "tokens:native": "node scripts/native-tokens.mjs",
+    "test": "node --test scripts/*.test.mjs"
   },
   "files": ["src", "tokens", "assets", "styles.css"],
   "peerDependencies": {

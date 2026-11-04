@@ -16,6 +16,7 @@ Authored + graded good (29): Button, Card, DataTable, Field, IconButton, StatTil
 Floor card (not yet authored, 17): AppBar, BrandButton, FormActions, FormRow, Hero, ListGroup, ListRow, ModalBody, ModalFooter, NavItem, PageHeader, Section, SectionHeader, Sheet, SheetAction, ToastProvider, ToastStack. Author on any re-sync; grades carry forward.
 
 ## Re-sync risks
+- `tokens/native.js` (React Native) is generated from `tokens/*.css`: after any token change, including an import from Claude Design, run `npm run tokens:native`. `npm test` fails while it is stale.
 - Previews carry hardcoded Argentine sample data (CUITs, comprobantes) — fine unless prop shapes change; sanity-check against `.d.ts` after API edits.
 - `ds.css` is generated from `styles.css`'s import list: a new token file added to `styles.css` is picked up only if `flatten-css.mjs` runs first.
 - `mobile/` and `marketing/` were untracked in git at first sync (uncommitted work in the repo); they synced from the working tree.
