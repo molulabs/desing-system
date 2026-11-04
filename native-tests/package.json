@@ -1,0 +1,20 @@
+{
+  "name": "@molulabs/ds-native-tests",
+  "private": true,
+  "description": "Render tests of the React Native versions of @molulabs/ds. Its own node_modules: the root keeps none, the backoffice container mounts it.",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "@molulabs/ds": "link:..",
+    "expo": "~58.0.23",
+    "react": "19.3.0",
+    "react-native": "0.88.1"
+  },
+  "devDependencies": {
+    "@testing-library/react-native": "^13.3.0",
+    "jest": "^30.0.0",
+    "jest-expo": "~58.0.0",
+    "react-test-renderer": "19.3.0"
+  }
+}

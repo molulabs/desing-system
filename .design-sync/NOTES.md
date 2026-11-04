@@ -17,6 +17,7 @@ Floor card (not yet authored, 17): AppBar, BrandButton, FormActions, FormRow, He
 
 ## Re-sync risks
 - `tokens/native.js` (React Native) is generated from `tokens/*.css`: after any token change, including an import from Claude Design, run `npm run tokens:native`. `npm test` fails while it is stale.
+- React Native versions sit next to each web component as `<Name>.native.jsx`, share its `.d.ts` and are exported only from `src/index.native.js`: `src/index.js` (the sync entry) never imports them. Their render tests are in `native-tests/` (`npm run test:native`), which has its own node_modules so the root keeps none.
 - `assets/fonts/native/*.ttf` (React Native) are cut from the woff2 by `scripts/native-fonts.py` (fontTools; the docker command is in its header). Re-run it if a woff2 changes, e.g. a new Tabler version.
 - Previews carry hardcoded Argentine sample data (CUITs, comprobantes) — fine unless prop shapes change; sanity-check against `.d.ts` after API edits.
 - `ds.css` is generated from `styles.css`'s import list: a new token file added to `styles.css` is picked up only if `flatten-css.mjs` runs first.

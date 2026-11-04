@@ -33,7 +33,8 @@
   ],
   "scripts": {
     "tokens:native": "node scripts/native-tokens.mjs",
-    "test": "node --test scripts/*.test.mjs src/native/*.test.mjs"
+    "test": "node --test scripts/*.test.mjs src/native/*.test.mjs",
+    "test:native": "pnpm --dir native-tests install --frozen-lockfile && pnpm --dir native-tests test"
   },
   "peerDependencies": {
     "react": ">=18",
