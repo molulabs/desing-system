@@ -5,25 +5,47 @@
   "description": "Molulabs Design System — componentes React, tokens y fuentes (origen: Claude Design, proyecto 9dc4b57a-d1fe-4377-895b-fe499512b839)",
   "type": "module",
   "types": "./src/index.d.ts",
-  "sideEffects": ["*.css"],
+  "react-native": "./src/index.native.js",
+  "sideEffects": [
+    "*.css"
+  ],
   "exports": {
     ".": {
       "types": "./src/index.d.ts",
+      "react-native": "./src/index.native.js",
       "default": "./src/index.js"
     },
-    "./styles.css": "./styles.css",
+    "./native": {
+      "types": "./src/native/index.d.ts",
+      "default": "./src/native/index.js"
+    },
     "./tokens/native": {
       "types": "./tokens/native.d.ts",
       "default": "./tokens/native.js"
-    }
+    },
+    "./styles.css": "./styles.css"
   },
+  "files": [
+    "src",
+    "tokens",
+    "assets",
+    "styles.css"
+  ],
   "scripts": {
     "tokens:native": "node scripts/native-tokens.mjs",
-    "test": "node --test scripts/*.test.mjs"
+    "test": "node --test scripts/*.test.mjs src/native/*.test.mjs"
   },
-  "files": ["src", "tokens", "assets", "styles.css"],
   "peerDependencies": {
     "react": ">=18",
-    "react-dom": ">=18"
+    "react-dom": ">=18",
+    "react-native": ">=0.76"
+  },
+  "peerDependenciesMeta": {
+    "react-dom": {
+      "optional": true
+    },
+    "react-native": {
+      "optional": true
+    }
   }
 }

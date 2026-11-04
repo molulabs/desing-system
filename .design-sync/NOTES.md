@@ -17,6 +17,7 @@ Floor card (not yet authored, 17): AppBar, BrandButton, FormActions, FormRow, He
 
 ## Re-sync risks
 - `tokens/native.js` (React Native) is generated from `tokens/*.css`: after any token change, including an import from Claude Design, run `npm run tokens:native`. `npm test` fails while it is stale.
+- `assets/fonts/native/*.ttf` (React Native) are cut from the woff2 by `scripts/native-fonts.py` (fontTools; the docker command is in its header). Re-run it if a woff2 changes, e.g. a new Tabler version.
 - Previews carry hardcoded Argentine sample data (CUITs, comprobantes) — fine unless prop shapes change; sanity-check against `.d.ts` after API edits.
 - `ds.css` is generated from `styles.css`'s import list: a new token file added to `styles.css` is picked up only if `flatten-css.mjs` runs first.
 - `mobile/` and `marketing/` were untracked in git at first sync (uncommitted work in the repo); they synced from the working tree.

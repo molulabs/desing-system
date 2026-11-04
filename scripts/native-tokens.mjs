@@ -1,6 +1,7 @@
 // Builds tokens/native.js (and its .d.ts) from the tokens/*.css that styles.css imports, so React
-// Native reads the same values the web does. The CSS stays the source: design-sync and Claude
-// Design read and write it.
+// Native reads the same values the web does, and tokens/native-icons.js, the code point of each
+// Tabler icon in tokens/icons.css. The CSS stays the source: design-sync and Claude Design read
+// and write it.
 //
 //   node scripts/native-tokens.mjs          writes the files
 //   node scripts/native-tokens.mjs --check  fails if they are out of date
@@ -12,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUTPUT = join(ROOT, 'tokens/native.js');
 const OUTPUT_TYPES = join(ROOT, 'tokens/native.d.ts');
+const OUTPUT_ICONS = join(ROOT, 'tokens/native-icons.js');
 
 export const DEFAULT_THEME = 'campo';
 export const DEFAULT_DENSITY = 'touch';
@@ -227,6 +229,36 @@ export function buildNativeTokens(css) {
     return { themes, densities, webOnly: [...webOnly].sort() };
 }
 
+/**
+ * The code point of each icon class, without its "ti-": the Tabler font draws it as that
+ * character.
+ *
+ * @param {string} css
+ */
+export function buildIconGlyphs(css) {
+    const glyphs = {};
+
+    for (const [, name, code] of css.matchAll(/\.ti-([\w-]+):before\s*\{\s*content:\s*"\\([0-9a-f]+)"\s*\}/gi)) {
+        glyphs[name] = parseInt(code, 16);
+    }
+
+    if (Object.keys(glyphs).length === 0) {
+        throw new Error('No Tabler icon found in tokens/icons.css');
+    }
+
+    return glyphs;
+}
+
+export function renderIcons(glyphs) {
+    return `${HEADER}
+//
+// The code point of each Tabler icon, by its class without "ti-": String.fromCodePoint(glyphs.plus)
+// drawn in the tabler-icons font is <i className="ti ti-plus" />.
+
+export const glyphs = ${JSON.stringify(glyphs)};
+`;
+}
+
 /** The CSS styles.css imports, in its order. */
 export function readTokenCss() {
     const entry = readFileSync(join(ROOT, 'styles.css'), 'utf8');
@@ -301,6 +333,7 @@ export declare function nativeTokens(options?: { theme?: ThemeName; density?: De
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     const { js, types } = render(buildNativeTokens(readTokenCss()));
+    const icons = renderIcons(buildIconGlyphs(readFileSync(join(ROOT, 'tokens/icons.css'), 'utf8')));
 
     if (process.argv.includes('--check')) {
         const current = (file) => {
@@ -311,12 +344,13 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
             }
         };
 
-        if (current(OUTPUT) !== js || current(OUTPUT_TYPES) !== types) {
+        if (current(OUTPUT) !== js || current(OUTPUT_TYPES) !== types || current(OUTPUT_ICONS) !== icons) {
             console.error('tokens/native.js is out of date: run `npm run tokens:native`.');
             process.exit(1);
         }
     } else {
         writeFileSync(OUTPUT, js);
         writeFileSync(OUTPUT_TYPES, types);
+        writeFileSync(OUTPUT_ICONS, icons);
     }
 }
