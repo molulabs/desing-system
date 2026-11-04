@@ -40,6 +40,59 @@
       "cardMode": "single",
       "primaryStory": "Open",
       "viewport": "360x340"
+    },
+    "Sheet": {
+      "cardMode": "single",
+      "viewport": "390x460"
+    },
+    "SheetAction": {
+      "cardMode": "single",
+      "viewport": "390x360"
+    },
+    "ModalBody": {
+      "cardMode": "single",
+      "viewport": "780x440"
+    },
+    "ModalFooter": {
+      "cardMode": "single",
+      "viewport": "780x320"
+    },
+    "ToastProvider": {
+      "cardMode": "single",
+      "viewport": "420x300"
+    },
+    "ToastStack": {
+      "cardMode": "single",
+      "viewport": "420x240"
+    },
+    "Hero": {
+      "cardMode": "column",
+      "viewport": "1040x560"
+    },
+    "Section": {
+      "cardMode": "column",
+      "viewport": "1040x560"
+    },
+    "FormRow": {
+      "cardMode": "column"
+    },
+    "SectionHeader": {
+      "cardMode": "column"
+    },
+    "FormActions": {
+      "cardMode": "column"
+    },
+    "ListGroup": {
+      "cardMode": "column"
+    },
+    "AppBar": {
+      "cardMode": "column"
+    },
+    "ListRow": {
+      "cardMode": "column"
+    },
+    "PageHeader": {
+      "cardMode": "column"
     }
   },
   "readmeHeader": ".design-sync/conventions.md"

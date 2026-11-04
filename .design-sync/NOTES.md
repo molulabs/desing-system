@@ -13,7 +13,10 @@
 
 ## Preview coverage
 Authored + graded good (29): Button, Card, DataTable, Field, IconButton, StatTile, StatGrid, Tag, TextInput, Textarea, NumberInput, Select, Checkbox, Choice, FilterBar, Pagination, TableToolbar, KeyValueList, RowActions, Modal, ModalHeader, Dialog, Toast, AlertBanner, EmptyState, DonutChart, AppBarAction, SatelliteIcon, MapMarker.
-Floor card (not yet authored, 17): AppBar, BrandButton, FormActions, FormRow, Hero, ListGroup, ListRow, ModalBody, ModalFooter, NavItem, PageHeader, Section, SectionHeader, Sheet, SheetAction, ToastProvider, ToastStack. Author on any re-sync; grades carry forward.
+Authored 2026-10-09, screenshots reviewed by eye, not graded by the pipeline (17): AppBar, BrandButton, FormActions, FormRow, Hero, ListGroup, ListRow, ModalBody, ModalFooter, NavItem, PageHeader, Section, SectionHeader, Sheet, SheetAction, ToastProvider, ToastStack. All 70 components now have an authored preview; none is a floor card.
+- Fixed-position pieces (ToastProvider `stackStyle`, ToastStack `style`) use `position: 'static'` in previews, otherwise they escape the card. ToastProvider previews pass `duration={Infinity}` so the toasts don't auto-close before the screenshot.
+- Hero/Section previews wrap in `data-density="comfortable"` (they are only meant for that density). On the chrome Hero the primary action is a `secondary` Button: the default primary is the same green as the field and disappears.
+- `cardMode: "column"` is set for the previews that the pipeline flagged `GRID_OVERFLOW` (FormRow, SectionHeader, FormActions, ListGroup, AppBar, ListRow, PageHeader).
 
 ## Re-sync risks
 - `tokens/native.js` (React Native) is generated from `tokens/*.css`: after any token change, including an import from Claude Design, run `npm run tokens:native`. `npm test` fails while it is stale.
