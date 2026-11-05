@@ -1,5 +1,5 @@
 // What React Native needs besides the components: the tokens, the fonts and the icon.
-export { DesignSystemProvider, useTokens } from './theme.jsx';
+export { DesignSystemProvider, Hosted, useInsets, useTokens } from './theme.jsx';
 export { Icon } from './Icon.jsx';
 export { fonts } from './fonts.js';
 export { fontFamily, ICON_FONT } from './typography.js';

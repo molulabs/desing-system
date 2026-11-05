@@ -15,11 +15,33 @@ export declare function DesignSystemProvider(props: {
     theme?: ThemeName;
     /** Default "touch". */
     density?: DensityName;
+    /**
+     * The screen's safe area, e.g. react-native-safe-area-context's useSafeAreaInsets(). Sheets
+     * keep their content above the gesture bar with it. Default all 0.
+     */
+    insets?: Partial<Insets>;
     children?: React.ReactNode;
 }): React.JSX.Element;
 
+export interface Insets {
+    top: number;
+    right: number;
+    bottom: number;
+    left: number;
+}
+
 /** The tokens of the closest DesignSystemProvider. */
 export declare function useTokens(): NativeTokens;
+
+/** The safe area the closest DesignSystemProvider was given; all 0 without one. */
+export declare function useInsets(): Insets;
+
+/**
+ * Renders its children at the DesignSystemProvider, outside the screen's ScrollView, which would
+ * take the first tap while the keyboard is up. For content the system draws itself: contexts
+ * between the provider and here do not reach it. In place without a provider.
+ */
+export declare function Hosted(props: { children?: React.ReactNode }): React.JSX.Element | null;
 
 export interface IconProps extends Omit<TextProps, 'children'> {
     /** Tabler icon, as the web components take it: "ti-plus" (or "plus"). */

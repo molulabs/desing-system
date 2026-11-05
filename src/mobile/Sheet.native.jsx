@@ -2,16 +2,18 @@ import React from 'react';
 import { Modal, Pressable, ScrollView, View } from 'react-native';
 
 import { Icon } from '../native/Icon.jsx';
-import { useTokens } from '../native/theme.jsx';
+import { useInsets, useTokens } from '../native/theme.jsx';
 import { textChildren } from '../native/Txt.jsx';
 import { padding } from '../native/style.js';
 
 /**
  * Bottom sheet — the mobile stand-in for Dialog and for row action menus. A native modal, so it
- * needs no host; Android's back button closes it like a tap on the scrim.
+ * needs no host; Android's back button closes it like a tap on the scrim. It draws behind the system
+ * bars and keeps its content above the gesture bar with the provider's insets.
  */
 export function Sheet({ open, title, sub, onClose, actions, children, style, ...rest }) {
   const t = useTokens();
+  const insets = useInsets();
 
   return (
     <Modal visible={!!open} transparent animationType="slide" statusBarTranslucent navigationBarTranslucent onRequestClose={onClose}>
@@ -19,7 +21,7 @@ export function Sheet({ open, title, sub, onClose, actions, children, style, ...
         <Pressable accessibilityLabel="Cerrar" onPress={onClose} style={{ position: 'absolute', top: 0, right: 0, bottom: 0, left: 0, backgroundColor: t.scrim }} />
         <View accessibilityViewIsModal {...rest} style={[{
           maxHeight: '86%', backgroundColor: t.card, borderTopLeftRadius: t.rLg, borderTopRightRadius: t.rLg,
-          boxShadow: t.shadowDialog, paddingTop: 8, paddingHorizontal: 16, paddingBottom: 16,
+          boxShadow: t.shadowDialog, paddingTop: 8, paddingHorizontal: 16, paddingBottom: 16 + insets.bottom,
         }, style]}>
           <View style={{ width: 38, height: 4, borderRadius: t.rPill, backgroundColor: t.line, alignSelf: 'center', marginBottom: 12 }} />
           <ScrollView bounces={false} keyboardShouldPersistTaps="handled">

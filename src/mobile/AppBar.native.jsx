@@ -6,7 +6,10 @@ import { useTokens } from '../native/theme.jsx';
 import { Badge } from '../native/Badge.jsx';
 import { textChildren } from '../native/Txt.jsx';
 
-/** Top bar for mobile screens — the chrome field, 56px tall at touch density. */
+/**
+ * Top bar for mobile screens — the chrome field, 56px tall at touch density. The status bar's
+ * safe area is the screen's: pad it through style (paddingTop) when the bar sits on the edge.
+ */
 export function AppBar({ title, sub, onBack, backLabel = 'Volver', actions, tone = 'chrome', style, ...rest }) {
   const t = useTokens();
   const dark = tone === 'chrome';

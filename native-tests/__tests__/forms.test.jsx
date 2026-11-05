@@ -1,12 +1,12 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import React from 'react';
-import { Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 
 import {
     Autocomplete, AutocompleteMulti, Checkbox, DateInput, Dialog, KeyValueList, MultiChoice, NumberInput, RadioGroup,
     SectionHeader, SegmentedControl, Select, Sheet, SheetAction, Stepper, Switch, Textarea, Wizard,
 } from '@molulabs/ds';
-import { fontFamily, nativeTokens } from '@molulabs/ds/native';
+import { DesignSystemProvider, fontFamily, nativeTokens } from '@molulabs/ds/native';
 
 const t = nativeTokens();
 const flat = (style) => Object.assign({}, ...[style].flat(Infinity).filter(Boolean));
@@ -22,6 +22,19 @@ test('NumberInput: mono, right aligned, the number pad, and the text as typed', 
 
     fireEvent.changeText(input, '12,5');
     expect(onChange).toHaveBeenCalledWith('12,5');
+});
+
+test('NumberInput holds the unit beside the figure, not over it', () => {
+    render(<NumberInput value="12" unit="ha" prefix="$" />);
+
+    const input = screen.getByDisplayValue('12');
+    // Siblings in a row, so no padding has to follow a measured width
+    expect(flat(input.props.style)).toMatchObject({ flex: 1, padding: 0 });
+    let box = input.parent;
+    while (box && !flat(box.props.style).borderWidth) box = box.parent;
+    expect(flat(box.props.style)).toMatchObject({ flexDirection: 'row', borderWidth: 1 });
+    expect(screen.getByText('ha')).toBeTruthy();
+    expect(screen.getByText('$')).toBeTruthy();
 });
 
 test('NumberInput readOnly shows the figure and takes no edits', () => {
@@ -136,6 +149,38 @@ test('Autocomplete searches in a sheet, picks, and offers to create what is miss
     fireEvent.changeText(screen.getByRole('search'), 'Angus');
     fireEvent.press(screen.getByText('Crear «Angus»'));
     expect(onCreate).toHaveBeenCalledWith('Angus');
+});
+
+test('the search sheet sits at the provider, out of the screen ScrollView that would eat the first tap', () => {
+    const onSelect = jest.fn();
+    const inScreen = (node) => {
+        for (let n = node; n; n = n.parent) if (n.props?.testID === 'screen') return true;
+        return false;
+    };
+    function Screen({ hosted }) {
+        const field = <Autocomplete value="" onChange={() => {}} onSelect={onSelect} items={[{ label: 'Palpalá', value: 1 }]} />;
+        const page = <ScrollView testID="screen">{field}</ScrollView>;
+        return hosted ? <DesignSystemProvider>{page}</DesignSystemProvider> : page;
+    }
+
+    const { rerender } = render(<Screen hosted />);
+    fireEvent.press(screen.getByRole('combobox'));
+    expect(inScreen(screen.getByRole('search'))).toBe(false);
+    fireEvent.press(screen.getByText('Palpalá'));
+    expect(onSelect).toHaveBeenCalledWith({ label: 'Palpalá', value: 1 });
+
+    // Without a provider it still works, in place
+    rerender(<Screen />);
+    fireEvent.press(screen.getByRole('combobox'));
+    expect(inScreen(screen.getByRole('search'))).toBe(true);
+});
+
+test('Sheet keeps its content above the gesture bar with the provider insets', () => {
+    render(<DesignSystemProvider insets={{ bottom: 24 }}><Sheet open title="Ana Martínez" /></DesignSystemProvider>);
+
+    let panel = screen.getByText('Ana Martínez');
+    while (!panel.props.accessibilityViewIsModal) panel = panel.parent;
+    expect(flat(panel.props.style).paddingBottom).toBe(16 + 24);
 });
 
 test('AutocompleteMulti shows the picks as chips, hides them from the list and removes them', () => {
