@@ -57,3 +57,14 @@ test('a step is done before the current one, todo after it, unless it says other
     assert.equal(statusOf({}, 2, 1), 'todo');
     assert.equal(statusOf({ status: 'error' }, 0, 1), 'error');
 });
+
+test('no source writes combining marks literally: a page read as latin1 breaks the regex that strips accents', async () => {
+    const { readdirSync, readFileSync } = await import('node:fs');
+    const { join } = await import('node:path');
+    const root = new URL('..', import.meta.url).pathname;
+    const files = readdirSync(root, { recursive: true }).filter((f) => /\.(js|jsx)$/.test(f));
+
+    for (const file of files) {
+        assert.doesNotMatch(readFileSync(join(root, file), 'utf8'), /[̀-ͯ]/, file + ': write it as \\u0300-\\u036f');
+    }
+});

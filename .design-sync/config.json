@@ -43,11 +43,11 @@
     },
     "Sheet": {
       "cardMode": "single",
-      "viewport": "390x460"
+      "viewport": "440x510"
     },
     "SheetAction": {
       "cardMode": "single",
-      "viewport": "390x360"
+      "viewport": "440x410"
     },
     "ModalBody": {
       "cardMode": "single",
@@ -63,7 +63,7 @@
     },
     "ToastStack": {
       "cardMode": "single",
-      "viewport": "420x240"
+      "viewport": "450x260"
     },
     "Hero": {
       "cardMode": "column",

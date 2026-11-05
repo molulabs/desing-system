@@ -1,7 +1,7 @@
 // What an Autocomplete lists for the typed text, the same for every renderer.
 
 /** Lower case, without accents or edge spaces: how the text and the items are compared. */
-export const acNorm = s => String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+export const acNorm = s => String(s == null ? '' : s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
 export const defaultExact = (it, t) => acNorm(typeof it.label === 'string' ? it.label : it.value) === acNorm(t);
 export const defaultCreateLabel = t => 'Crear «' + t + '»';
 
