@@ -1,5 +1,21 @@
 # design-sync notes — @molulabs/ds
 
+## Publish target: the artifact, not Claude Design
+- The design system is published to the Claude artifact **Molulabs Design System**: https://claude.ai/artifact/KAuvBfAZztNVmtWNNH7K59 (type "Design System", `"editing": "code"`). Publish there with the Artifact tool, following the type's `artifact-type/reference/from-code.md` (re-sync: send only the changed files under `project/`, then the index last with `lastChange` set, and update `project/github.md` with the synced version and short sha).
+- `projectId` in `config.json` (`9dc4b57a-…`) is the old Claude Design project. It stays only because the converter reads the config; never upload to it. Standalone Claude Design closes on 2026-12-14.
+- The old artifact "Molulabs DS (synced)" (Claude Design project `11a50539-…`) was deleted on 2026-11-13.
+- `/design-sync` cannot publish there yet: `get_project` on `9dc4b57a` returns `moveState: "moved"` and the run stops before building (checked 2026-11-13). Don't run it until a Claude Code release says it supports artifacts.
+
+### How a sync works now (repo → artifact)
+1. Change the code here, run `npm test` (and `npm run tokens:native` after a token change), commit and push.
+2. Ask Claude Code to sync the artifact. It diffs the new commit against the one in `project/github.md` and maps each change:
+   - `src/<group>/X.jsx` and `X.native.jsx` → `project/components/<group>/X.jsx` / `X.native.jsx`
+   - types → `project/components/index.d.ts` and `project/components/X/X.d.ts`
+   - `tokens/*.css` → `project/tokens.json` (and `project/tokens.css`)
+   - previews → `project/components/X/preview.html`
+   - web code changed → rebuild `project/components/bundle.js` and `bundle.css` (one IIFE assigning `window.MolulabsDS`; the converter scripts that used to live in `.ds-sync/` can be staged again from the design-sync skill, or bundle with esbuild as `from-code.md` describes). Native-only changes need no rebuild.
+3. Publish only the changed files, then `project/github.md` and the index (`project/design-system.json`) last, with `lastChange` set and `"editing": "code"` kept. Confirm the file list with the user before publishing.
+
 - No `dist/` and no build: the package ships JSX source. Sync runs with `--entry ./src/index.js`; the component list comes from `src/index.d.ts` (the root `package.json` now has `"types": "./src/index.d.ts"` — the converter reads that field, not `exports`).
 - `@types/react` must be reachable from the package dir or props resolve to `any` (`[DTS_REACT]`). Staged deps live in `.ds-sync/`; the converter looks for `node_modules/@types/react` walking up from the repo, so a **temporary** symlink `node_modules -> .ds-sync/node_modules` is created for the run (gitignored). Remove it afterwards: the backoffice container mounts this dir and a stray `node_modules` could duplicate React there.
 - Styling: `styles.css` is an `@import` list of `tokens/*.css`, whose `url()`s point at `../assets/fonts/`. `.design-sync/flatten-css.mjs` inlines it into `.design-sync/ds.css` (gitignored, `cssEntry`); **run it before every build** (`node .design-sync/flatten-css.mjs`). The converter then extracts the fonts into `fonts/` and tokens end up in `_ds_bundle.css`; `ds-bundle/tokens/` is empty by design.
