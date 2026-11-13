@@ -78,3 +78,14 @@
   --leather: #0E7282; --leather-2: #5FD3E3;
   --mut: #4A5663; --mut-bg: #EAEEF1; --mut-2: #8A9AA8;
 }
+
+/* Malbec — el vino de la terminal de Ubuntu: chrome #300A24 + dorado.
+   Todo se deriva del chrome: texto y superficies llevan su tono; el dorado da
+   5.8:1 sobre card y 7:1 sobre el chrome. */
+[data-theme="malbec"] {
+  --ink: #281922; --ink-2: #5E4E58; --ink-3: #8C7D86;
+  --page: #F6F2F4; --card: #FFFFFF; --zebra: #FCFAFB; --line: #E3DBDF; --line-soft: #EDE7EA;
+  --chrome: #300A24; --chrome-2: #401932; --chrome-line: #4E2840; --chrome-ink: #DDCDD6; --chrome-mut: #B195A5;
+  --leather: #82601C; --leather-2: #C29F50;
+  --mut: #5E4E58; --mut-bg: #F0ECEE; --mut-2: #A09199;
+}

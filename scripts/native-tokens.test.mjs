@@ -19,6 +19,12 @@ test('a theme reaches the tokens that alias its colours', () => {
     assert.equal(themes.carbon.ok, themes.campo.ok);
 });
 
+test('the malbec theme reaches native', () => {
+    assert.equal(themes.malbec.chrome, '#300A24');
+    assert.equal(themes.malbec.leather, '#82601C');
+    assert.equal(themes.malbec.ok, themes.campo.ok);
+});
+
 test('native defaults to the touch density of the campo theme', () => {
     const tokens = nativeTokens();
 

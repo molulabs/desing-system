@@ -6,7 +6,7 @@ Spanish-language operations UI (comprobantes, remitos, CUIT, sedes). Components 
 - Load `styles.css` (it imports `fonts/fonts.css`, which ships IBM Plex Sans/Mono and the Tabler icon font, then `_ds_bundle.css`). Without it components render unstyled, in the wrong font, with no icons.
 - Components are on `window.MolulabsDS.*`. No theme provider is needed. The one exception is toasts: wrap the app once in `<ToastProvider>` and call `useToasts().push(tone, title, msg)`; bare `<Toast>` / `<ToastStack>` are only for static layouts.
 - Icons are Tabler webfont classes passed as strings: `icon="ti-plus"`, `ti-search`, `ti-download`, `ti-trash`. Use `<i className="ti ti-check" />` for your own glue.
-- Theme and density are attributes on any ancestor: `data-theme="carbon" | "senal"` (default = green "campo"), `data-density="compact" | "comfortable" | "touch"`.
+- Theme and density are attributes on any ancestor: `data-theme="carbon" | "senal" | "malbec"` (default = green "campo"), `data-density="compact" | "comfortable" | "touch"`.
 
 ## Styling idiom: `var(--token)`
 Never hardcode colours, sizes or fonts in your own layout glue; use tokens (all defined in `_ds_bundle.css`, imported by `styles.css` — read it before styling):
