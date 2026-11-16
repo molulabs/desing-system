@@ -101,7 +101,7 @@ test('PasswordInput shows the password with the eye and hides it again', () => {
     expect(input().props.secureTextEntry).toBe(true);
 
     fireEvent.press(screen.getByRole('button', { name: 'Mostrar contraseña' }));
-    expect(input().props.secureTextEntry).toBeFalsy();
+    expect(input().props.secureTextEntry).toBe(false);
     // Shown, it still takes no capitals nor corrections
     expect(input().props).toMatchObject({ autoCapitalize: 'none', autoCorrect: false });
 

@@ -16,7 +16,7 @@ export function PasswordInput({ disabled, readOnly, style, ...rest }) {
     <View style={{ justifyContent: 'center' }}>
       {/* Shown, it is still a password: no capitals, corrections nor suggestions */}
       <TextInput {...rest} disabled={disabled} readOnly={readOnly} type={shown ? 'text' : 'password'}
-        autoCapitalize="none" autoCorrect={false} spellCheck={false}
+        secureTextEntry={!shown} autoCapitalize="none" autoCorrect={false} spellCheck={false}
         style={[{ paddingRight: t.tapMin }, style]} />
       <Pressable accessibilityRole="button" accessibilityLabel={label}
         accessibilityState={{ disabled: !!disabled, selected: shown }}
