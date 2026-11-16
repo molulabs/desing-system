@@ -5,6 +5,7 @@ import { Icon } from '../native/Icon.jsx';
 import { Hosted, useTokens } from '../native/theme.jsx';
 import { textChildren, Txt } from '../native/Txt.jsx';
 import { Sheet } from '../mobile/Sheet.native.jsx';
+import { TYPES } from './TextInput.native.jsx';
 import { controlStyle } from './Field.native.jsx';
 import { acResults, defaultCreateLabel } from './acResults.js';
 
@@ -14,7 +15,7 @@ import { acResults, defaultCreateLabel } from './acResults.js';
  * DesignSystemProvider: inside the screen's ScrollView the first tap on a match would only close
  * the keyboard.
  */
-export function AcSheet({ open, onClose, query, onQuery, items, exclude, placeholder, icon, emptyLabel = 'Sin resultados', onPick, onCreate, createLabel = defaultCreateLabel, matchExact, header }) {
+export function AcSheet({ open, onClose, query, onQuery, items, exclude, placeholder, icon, emptyLabel = 'Sin resultados', onPick, onCreate, createLabel = defaultCreateLabel, matchExact, header, type = 'text' }) {
   const t = useTokens();
   const { text, list, canCreate } = acResults({ items, query, onCreate, matchExact, exclude });
   const row = (i, pressed) => ({
@@ -27,7 +28,7 @@ export function AcSheet({ open, onClose, query, onQuery, items, exclude, placeho
       <Sheet open={open} onClose={onClose} style={{ minHeight: '60%' }}>
         {header}
         <View style={{ justifyContent: 'center', marginBottom: 8 }}>
-          <NativeTextInput autoFocus value={query || ''} onChangeText={onQuery} placeholder={placeholder} placeholderTextColor={t.ink3}
+          <NativeTextInput {...TYPES[type]} autoFocus value={query || ''} onChangeText={onQuery} placeholder={placeholder} placeholderTextColor={t.ink3}
             returnKeyType={canCreate ? 'done' : 'search'} onSubmitEditing={() => canCreate && onCreate(text)}
             accessibilityRole="search" style={[controlStyle({ focus: true }, t), { paddingLeft: 36 }]} />
           <Icon name={icon} size={18} color={t.ink3} pointerEvents="none" style={{ position: 'absolute', left: 11 }} />

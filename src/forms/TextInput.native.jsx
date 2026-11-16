@@ -6,7 +6,7 @@ import { useTokens } from '../native/theme.jsx';
 import { controlStyle } from './Field.native.jsx';
 
 // The web input types as the keyboard and entry React Native shows for them
-const TYPES = {
+export const TYPES = {
   email: { keyboardType: 'email-address', autoCapitalize: 'none', autoCorrect: false },
   password: { secureTextEntry: true, autoCapitalize: 'none', autoCorrect: false },
   number: { keyboardType: 'numeric' },

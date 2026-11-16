@@ -34,6 +34,8 @@ export interface AutocompleteProps {
   matchExact?: (item: AutocompleteItem, text: string) => boolean;
   /** Sent with native form submission (the typed text). */
   name?: string;
+  /** Input type, as in TextInput: "number" shows the numeric keyboard on mobile. Default "text". */
+  type?: string;
   invalid?: boolean;
   disabled?: boolean;
   id?: string;

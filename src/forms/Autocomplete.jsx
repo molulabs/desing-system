@@ -87,14 +87,14 @@ export function useAcMenu({ items, query, emptyLabel = 'Sin resultados', onPick,
   return { anchor, open, setOpen, onKey, menu };
 }
 
-export function Autocomplete({ value, onChange, onSelect, items = [], placeholder, icon = 'ti-search', emptyLabel, onCreate, createLabel, matchExact, name, invalid, disabled, id, style }) {
+export function Autocomplete({ value, onChange, onSelect, items = [], placeholder, icon = 'ti-search', emptyLabel, onCreate, createLabel, matchExact, name, invalid, disabled, id, type = 'text', style }) {
   const [focus, setFocus] = React.useState(false);
   const ac = useAcMenu({ items, query: value, emptyLabel, onCreate, createLabel, matchExact, disabled, onPick: it => onSelect && onSelect(it) });
   return (
     <div style={{ position: 'relative', ...style }}>
       <span ref={ac.anchor} style={{ position: 'relative', display: 'block' }}>
         <i className={'ti ' + icon} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '16px', color: 'var(--ink-3)', pointerEvents: 'none' }} />
-        <input id={id} name={name} value={value || ''} disabled={disabled} placeholder={placeholder}
+        <input id={id} name={name} type={type} value={value || ''} disabled={disabled} placeholder={placeholder}
           role="combobox" aria-expanded={!!ac.menu} aria-autocomplete="list"
           onChange={e => { onChange && onChange(e.target.value); ac.setOpen(true); }}
           onKeyDown={ac.onKey}

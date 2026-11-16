@@ -175,6 +175,15 @@ test('the search sheet sits at the provider, out of the screen ScrollView that w
     expect(inScreen(screen.getByRole('search'))).toBe(true);
 });
 
+test('Autocomplete type="number" searches with the numeric keyboard', () => {
+    const { rerender } = render(<Autocomplete value="" onChange={() => {}} type="number" placeholder="DNI o CUIL" />);
+    fireEvent.press(screen.getByRole('combobox'));
+    expect(screen.getByRole('search').props.keyboardType).toBe('numeric');
+
+    rerender(<Autocomplete value="" onChange={() => {}} placeholder="DNI o CUIL" />);
+    expect(screen.getByRole('search').props.keyboardType).toBeUndefined();
+});
+
 test('Sheet keeps its content above the gesture bar with the provider insets', () => {
     render(<DesignSystemProvider insets={{ bottom: 24 }}><Sheet open title="Ana Martínez" /></DesignSystemProvider>);
 
