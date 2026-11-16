@@ -6,3 +6,6 @@ ds-bundle/
 .design-sync/node_modules
 .design-sync/ds.css
 .design-sync/.cache-*.log
+
+# Claude Code worktrees: working copies of this repo, never part of it
+.claude/worktrees/
