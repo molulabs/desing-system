@@ -14,6 +14,7 @@ export { FormRow, FormActions } from './forms/FormRow.jsx';
 export { LineItemsEditor } from './forms/LineItemsEditor.jsx';
 export { MultiChoice } from './forms/MultiChoice.jsx';
 export { NumberInput } from './forms/NumberInput.jsx';
+export { PasswordInput } from './forms/PasswordInput.jsx';
 export { SectionHeader } from './forms/SectionHeader.jsx';
 export { SegmentedControl } from './forms/SegmentedControl.jsx';
 export { Select } from './forms/Select.jsx';

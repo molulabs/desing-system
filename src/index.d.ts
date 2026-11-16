@@ -14,6 +14,7 @@ export * from './forms/FormRow';
 export * from './forms/LineItemsEditor';
 export * from './forms/MultiChoice';
 export * from './forms/NumberInput';
+export * from './forms/PasswordInput';
 export * from './forms/SectionHeader';
 export * from './forms/SegmentedControl';
 export * from './forms/Select';

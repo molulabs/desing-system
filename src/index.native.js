@@ -13,6 +13,7 @@ export { Field, controlStyle } from './forms/Field.native.jsx';
 export { FormRow, FormActions } from './forms/FormRow.native.jsx';
 export { MultiChoice } from './forms/MultiChoice.native.jsx';
 export { NumberInput } from './forms/NumberInput.native.jsx';
+export { PasswordInput } from './forms/PasswordInput.native.jsx';
 export { SectionHeader } from './forms/SectionHeader.native.jsx';
 export { SegmentedControl } from './forms/SegmentedControl.native.jsx';
 export { Select } from './forms/Select.native.jsx';

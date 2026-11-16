@@ -7,7 +7,7 @@ import { DesignSystemProvider, fontFamily, nativeTokens } from '@molulabs/ds/nat
 
 const {
     AlertBanner, AppBar, AppBarAction, Button, Card, EmptyState, Field, IconButton, ListGroup, ListRow, TabBar, Tag,
-    TextInput, Toast, ToastProvider, useToasts,
+    PasswordInput, TextInput, Toast, ToastProvider, useToasts,
 } = ds;
 
 const t = nativeTokens();
@@ -17,7 +17,7 @@ test('the package resolves the native renderers', () => {
     expect(Object.keys(ds).sort()).toEqual([
         'AlertBanner', 'AppBar', 'AppBarAction', 'Autocomplete', 'AutocompleteMulti', 'Button', 'Card', 'Checkbox', 'Choice',
         'DateInput', 'DateRange', 'Dialog', 'EmptyState', 'Field', 'FormActions', 'FormRow', 'IconButton', 'KeyValueList',
-        'ListGroup', 'ListRow', 'MultiChoice', 'NumberInput', 'RadioGroup', 'SectionHeader', 'SegmentedControl', 'Select',
+        'ListGroup', 'ListRow', 'MultiChoice', 'NumberInput', 'PasswordInput', 'RadioGroup', 'SectionHeader', 'SegmentedControl', 'Select',
         'Sheet', 'SheetAction', 'Stepper', 'Switch', 'TOAST_TONES', 'TabBar', 'Tag', 'TextInput', 'Textarea', 'Toast',
         'ToastProvider', 'ToastStack', 'Wizard', 'controlStyle', 'useToasts',
     ]);
@@ -91,6 +91,32 @@ test('TextInput maps the web types to the keyboard', () => {
     const input = screen.getByPlaceholderText('Clave');
     expect(input.props.secureTextEntry).toBe(true);
     expect(input.props.editable).toBe(false);
+});
+
+test('PasswordInput shows the password with the eye and hides it again', () => {
+    const onChange = jest.fn();
+    render(<PasswordInput value="secreta" onChange={onChange} placeholder="Clave" />);
+
+    const input = () => screen.getByPlaceholderText('Clave');
+    expect(input().props.secureTextEntry).toBe(true);
+
+    fireEvent.press(screen.getByRole('button', { name: 'Mostrar contraseña' }));
+    expect(input().props.secureTextEntry).toBeFalsy();
+    // Shown, it still takes no capitals nor corrections
+    expect(input().props).toMatchObject({ autoCapitalize: 'none', autoCorrect: false });
+
+    fireEvent.press(screen.getByRole('button', { name: 'Ocultar contraseña' }));
+    expect(input().props.secureTextEntry).toBe(true);
+
+    fireEvent(input(), 'change', { nativeEvent: { text: 'otra' } });
+    expect(onChange).toHaveBeenCalledWith('otra', { nativeEvent: { text: 'otra' } });
+});
+
+test('PasswordInput disabled keeps the password hidden', () => {
+    render(<PasswordInput value="secreta" placeholder="Clave" disabled />);
+
+    fireEvent.press(screen.getByRole('button', { name: 'Mostrar contraseña' }));
+    expect(screen.getByPlaceholderText('Clave').props.secureTextEntry).toBe(true);
 });
 
 test('Card, Tag, AlertBanner and EmptyState draw their text', () => {
