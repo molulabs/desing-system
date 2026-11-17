@@ -276,3 +276,12 @@ test('SectionHeader and KeyValueList draw their text', () => {
     expect(flat(screen.getByText('30111222').props.style).fontFamily).toBe(fontFamily(t.mono));
     expect(flat(screen.getByText('12').props.style).fontFamily).toBe(fontFamily(t.sans, t.weightSemibold));
 });
+
+test('KeyValueList keeps the key whole beside a long value', () => {
+    render(<KeyValueList items={[{ k: 'Versión', v: '0.4.0 · actualización 01a1e74 del 16/11/2026' }]} />);
+
+    // Only the value shrinks: a key squeezed below its word would break it in the middle
+    let box = screen.getByText('Versión').parent;
+    while (box && flat(box.props.style).flexShrink === undefined) box = box.parent;
+    expect(flat(box.props.style)).toMatchObject({ flexShrink: 0, maxWidth: '50%' });
+});

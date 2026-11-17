@@ -19,7 +19,8 @@ export function KeyValueList({ items, style }) {
             borderTopWidth: e && i > 0 ? t.borderHair.width : 0, borderTopColor: t.borderHair.color,
             borderBottomWidth: i < items.length - 1 && !nextE ? t.borderHairSoft.width : 0, borderBottomColor: t.borderHairSoft.color,
           }}>
-            <View style={{ flexShrink: 1 }}>
+            {/* The key keeps its width, up to half the row, so a long value never splits its words */}
+            <View style={{ flexShrink: 0, maxWidth: '50%' }}>
               {textChildren(it.k, { size: t.textBase, color: e ? t.ink : t.ink2, weight: e ? t.weightSemibold : t.weightRegular })}
             </View>
             <View style={{ marginLeft: 'auto', flexShrink: 1, alignItems: 'flex-end' }}>
